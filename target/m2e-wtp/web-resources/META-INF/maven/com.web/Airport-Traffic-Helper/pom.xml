@@ -1,30 +1,60 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.web</groupId>
-  <artifactId>Airport-Traffic-Helper</artifactId>
-  <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>Airport-Traffic-Helper Maven Webapp</name>
-  <url>http://maven.apache.org</url>
-  
-  <properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.web</groupId>
+	<artifactId>Airport-Traffic-Helper</artifactId>
+	<packaging>war</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Airport-Traffic-Helper Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<!-- 빌드시 profile값을 안 넣어줄 경우 이 값을 default 하겠다는 의미 -->
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<env>dev</env>
+			</properties>
+		</profile>
+		<profile>
+			<id>real</id>
+			<properties>
+				<env>real</env>
+			</properties>
+		</profile>
+	</profiles>
+	<properties>
 		<java-version>1.8</java-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<m2eclipse.wtp.contextRoot>/</m2eclipse.wtp.contextRoot>
 	</properties>
-	
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<finalName>Airport-Traffic-Helper</finalName>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<resources>
+			<resource>
+				<!-- 공통참조 config -->
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<!-- 각 환경별(dev테스트환경, real실제환경 ) 참조 config 
+					mvn clean package -P dev 명령어를 입력해서 수행    -->
+				<directory>src/main/resources-${env}</directory>
+			</resource>
+		</resources>
 
 		<plugins>
 			<plugin>
@@ -53,5 +83,5 @@
 		</plugins>
 	</build>
 
-	
+
 </project>
