@@ -25,6 +25,7 @@ public class DispatcherServlet extends HttpServlet {
      * @see HttpServlet#HttpServlet()
      */
     public DispatcherServlet() {
+    	
     }
     
     @Override
@@ -41,10 +42,11 @@ public class DispatcherServlet extends HttpServlet {
             e.printStackTrace();
         }
         System.out.println("resources-env => "+props.getProperty("env"));
-        String driver = props.getProperty("");
+        String driver = props.getProperty("jdbc.driverClassName");
 		String url = props.getProperty("jdbc.url");
 		String userName = props.getProperty("jdbc.username");
 		String password = props.getProperty("jdbc.password");
+		System.out.println(driver);
     }
 
 	/**
@@ -52,39 +54,39 @@ public class DispatcherServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// step #1. get request parameters
-				request.setCharacterEncoding("UTF-8");
+		request.setCharacterEncoding("UTF-8");
 
-				String path = request.getRequestURI();
-				System.out.println("path >>" + path);
-				
-				String viewName = null;
+		String path = request.getRequestURI();
+		System.out.println("path >>" + path);
 
-				// step #2. data processing ==> dispatch request to controller
-				ControllerInterface handler = mapper.getHandler(path);
-				
-				if (path.contains("api")) {// REST API 기술
-					String data = handler.handleRequest(request, response, hthService);
-					
-					// step #3. output processing results
-					response.setContentType("text/html;charset=UTF-8");
-					response.getWriter().write(data);
+		String viewName = null;
 
-				} else {//페이지 이동
-					if (handler != null) {
-						//session이 있거나 cookie가 존재하면 넘어가기 -> 아니라면 알람띄우고 메인페이지
-						viewName = handler.handleRequest(request, response, hthService);
-					}
-					// step #3. output processing results
-					if (viewName == null) {
-						viewName = "error.jsp";
-					} else {
-						viewName = viewName.trim();// 공백제거함
-						viewName = "/WEB-INF/views/" + viewName;
+		// step #2. data processing ==> dispatch request to controller
+		ControllerInterface handler = mapper.getHandler(path);
 
-						RequestDispatcher view = request.getRequestDispatcher(viewName);
-						view.forward(request, response);
-					}
-				}
+		if (path.contains("api")) {// REST API 기술
+			String data = handler.handleRequest(request, response, hthService);
+
+			// step #3. output processing results
+			response.setContentType("text/html;charset=UTF-8");
+			response.getWriter().write(data);
+
+		} else {// 페이지 이동
+			if (handler != null) {
+				// session이 있거나 cookie가 존재하면 넘어가기 -> 아니라면 알람띄우고 메인페이지
+				viewName = handler.handleRequest(request, response, hthService);
+			}
+			// step #3. output processing results
+			if (viewName == null) {
+				viewName = "error.jsp";
+			} else {
+				viewName = viewName.trim();// 공백제거함
+				viewName = "/WEB-INF/views/" + viewName;
+
+				RequestDispatcher view = request.getRequestDispatcher(viewName);
+				view.forward(request, response);
+			}
+		}
 	}
 
 	/**
