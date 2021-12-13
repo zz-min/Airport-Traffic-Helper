@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.web.controlloer.impl.IndexController;
-
+import com.web.controlloer.impl.OpenApiController;
 
 public class HandlerMapping {
 	private Map<String, ControllerInterface> handlerMapper = null;
@@ -13,13 +13,12 @@ public class HandlerMapping {
 		handlerMapper = new HashMap<String, ControllerInterface>();
 
 		handlerMapper.put("/main", new IndexController());
+		handlerMapper.put("/login_main", new LoginMainController());//로그인 성공시 들어가는 URL
+		handlerMapper.put("/test", new TestController());
+		
+		handlerMapper.put("/api/openapi", new OpenApiController());
 		/*
 		 * handlerMapper.put("/main", new IndexController());
-		 * 
-		 * handlerMapper.put("/main/studio", new MainController());
-		 * handlerMapper.put("/main/rental", new MainController());
-		 * handlerMapper.put("/main/consulting", new MainController());
-		 * 
 		 * handlerMapper.put("/api/users", new ApiUserController());
 		 * handlerMapper.put("/api/schedules", new ApiScheduleController());
 		 * handlerMapper.put("/api/contents", new ApiContentController());
