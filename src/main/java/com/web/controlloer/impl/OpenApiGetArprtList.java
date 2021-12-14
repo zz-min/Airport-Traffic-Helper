@@ -18,7 +18,7 @@ import com.web.di.entity.Airport;
  * fhy41313p5usuDFdab0hFuBpAm0r2ByZwbHyFOFtRnOVjvXRYSJVdLJ64xx7FFryhq3fk9%2B6fuiLaBaoF9EZqg%3D%3D
  * fhy41313p5usuDFdab0hFuBpAm0r2ByZwbHyFOFtRnOVjvXRYSJVdLJ64xx7FFryhq3fk9+6fuiLaBaoF9EZqg==
  * */
-public class OpenApiGetArprtList {// 공항목록 조회
+public class OpenApiGetArprtList {// 공항목록 조회 Arprt / airport
 	
 	private static String common()  throws IOException{
 		StringBuilder urlBuilder = new StringBuilder("http://openapi.tago.go.kr/openapi/service/DmstcFlightNvgInfoService/getArprtList"); /*URL*/
@@ -44,6 +44,34 @@ public class OpenApiGetArprtList {// 공항목록 조회
         return sb.toString();
 //System.out.println(sb.toString());
 //<?xml version="1.0" encoding="UTF-8" standalone="yes"?><response><header><resultCode>00</resultCode><resultMsg>NORMAL SERVICE.</resultMsg></header><body><items><item><airportId>NAARKJB</airportId><airportNm>무안</airportNm></item><item><airportId>NAARKJJ</airportId><airportNm>광주</airportNm></item><item><airportId>NAARKJK</airportId><airportNm>군산</airportNm></item><item><airportId>NAARKJY</airportId><airportNm>여수</airportNm></item><item><airportId>NAARKNW</airportId><airportNm>원주</airportNm></item><item><airportId>NAARKNY</airportId><airportNm>양양</airportNm></item><item><airportId>NAARKPC</airportId><airportNm>제주</airportNm></item><item><airportId>NAARKPK</airportId><airportNm>김해</airportNm></item><item><airportId>NAARKPS</airportId><airportNm>사천</airportNm></item><item><airportId>NAARKPU</airportId><airportNm>울산</airportNm></item><item><airportId>NAARKSI</airportId><airportNm>인천</airportNm></item><item><airportId>NAARKSS</airportId><airportNm>김포</airportNm></item><item><airportId>NAARKTH</airportId><airportNm>포항</airportNm></item><item><airportId>NAARKTN</airportId><airportNm>대구</airportNm></item><item><airportId>NAARKTU</airportId><airportNm>청주</airportNm></item></items></body></response>
+	}
+	public String getArprtId(String name) throws IOException {
+		String id=null;
+		String input = common();
+		JSONObject vJsonObj = XML.toJSONObject(input);
+		JSONObject vJsonObj1= (JSONObject) vJsonObj.get("response");
+		JSONObject vJsonObj2= (JSONObject) vJsonObj1.get("body");
+		JSONObject vJsonObj3= (JSONObject) vJsonObj2.get("items");
+		JSONArray dataArr = (JSONArray) vJsonObj3.get("item");
+		for(int i=0;i<dataArr.length();i++) {
+			String str=dataArr.getJSONObject(i).get("airportNm").toString();
+			if(str.equals(name)) id=dataArr.getJSONObject(i).get("airportId").toString();
+        }
+		return id;
+	}
+	public String getArprtNm(String id) throws IOException  {
+		String name=null;
+		String input = common();
+		JSONObject vJsonObj = XML.toJSONObject(input);
+		JSONObject vJsonObj1= (JSONObject) vJsonObj.get("response");
+		JSONObject vJsonObj2= (JSONObject) vJsonObj1.get("body");
+		JSONObject vJsonObj3= (JSONObject) vJsonObj2.get("items");
+		JSONArray dataArr = (JSONArray) vJsonObj3.get("item");
+		for(int i=0;i<dataArr.length();i++) {
+			String str=dataArr.getJSONObject(i).get("airportId").toString();
+			if(str.equals(id)) name=dataArr.getJSONObject(i).get("airportNm").toString();
+        }
+		return name;
 	}
 	public List<String>  getArprtIdList() throws IOException{
 		List<String> airportIdList=new ArrayList<String>();
@@ -94,14 +122,7 @@ public class OpenApiGetArprtList {// 공항목록 조회
         JSONArray dataArr = (JSONArray) vJsonObj3.get("item");
         //System.out.println(dataArr);
         //[{"airportId":"NAARKJB","airportNm":"무안"},{"airportId":"NAARKJJ","airportNm":"광주"},{"airportId":"NAARKJK","airportNm":"군산"},{"airportId":"NAARKJY","airportNm":"여수"},{"airportId":"NAARKNW","airportNm":"원주"},{"airportId":"NAARKNY","airportNm":"양양"},{"airportId":"NAARKPC","airportNm":"제주"},{"airportId":"NAARKPK","airportNm":"김해"},{"airportId":"NAARKPS","airportNm":"사천"},{"airportId":"NAARKPU","airportNm":"울산"},{"airportId":"NAARKSI","airportNm":"인천"},{"airportId":"NAARKSS","airportNm":"김포"},{"airportId":"NAARKTH","airportNm":"포항"},{"airportId":"NAARKTN","airportNm":"대구"},{"airportId":"NAARKTU","airportNm":"청주"}]
-        
-        for(Object str : dataArr) {
-        	//System.out.println(str);
-			/*
-			 * {"airportId":"NAARKJB","airportNm":"무안"}
-			 * {"airportId":"NAARKJJ","airportNm":"광주"}
-			 */
-        }
+
         for(int i=0;i<dataArr.length();i++) {
         	//System.out.println(dataArr.getJSONObject(i));//{"airportId":"NAARKJB","airportNm":"무안"}
         	//System.out.println(dataArr.getJSONObject(i).get("airportId"));//NAARKJB

@@ -14,15 +14,9 @@ public class HandlerMapping {
 
 		handlerMapper.put("/main", new IndexController());
 		handlerMapper.put("/login_main", new LoginMainController());//로그인 성공시 들어가는 URL
-		handlerMapper.put("/test", new TestController());
+		handlerMapper.put("/input", new InputController());
 		
 		handlerMapper.put("/api/openapi", new OpenApiController());
-		/*
-		 * handlerMapper.put("/main", new IndexController());
-		 * handlerMapper.put("/api/users", new ApiUserController());
-		 * handlerMapper.put("/api/schedules", new ApiScheduleController());
-		 * handlerMapper.put("/api/contents", new ApiContentController());
-		 */
 	}
 
 	public ControllerInterface getHandler(String path) {

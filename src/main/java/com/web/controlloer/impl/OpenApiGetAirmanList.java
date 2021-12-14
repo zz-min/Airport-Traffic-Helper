@@ -6,13 +6,21 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.XML;
+
+import com.web.di.entity.Airline;
 /*Service Key
  * fhy41313p5usuDFdab0hFuBpAm0r2ByZwbHyFOFtRnOVjvXRYSJVdLJ64xx7FFryhq3fk9%2B6fuiLaBaoF9EZqg%3D%3D
  * fhy41313p5usuDFdab0hFuBpAm0r2ByZwbHyFOFtRnOVjvXRYSJVdLJ64xx7FFryhq3fk9+6fuiLaBaoF9EZqg==
  * */
-public class OpenApiGetAirmanList {//항공사목록 조회 
+public class OpenApiGetAirmanList {// 항공사목록 조회  Airman / airline
 	
-	public String getAirmanList() throws IOException{
+	private static String common()  throws IOException{
 		StringBuilder urlBuilder = new StringBuilder("http://openapi.tago.go.kr/openapi/service/DmstcFlightNvgInfoService/getAirmanList"); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=fhy41313p5usuDFdab0hFuBpAm0r2ByZwbHyFOFtRnOVjvXRYSJVdLJ64xx7FFryhq3fk9%2B6fuiLaBaoF9EZqg%3D%3D"); /*Service Key*/
         URL url = new URL(urlBuilder.toString());
@@ -33,15 +41,76 @@ public class OpenApiGetAirmanList {//항공사목록 조회
         }
         rd.close();
         conn.disconnect();
-        System.out.println(sb.toString());
-     // 1. 문자열 형태의 JSON을 파싱하기 위한 JSONParser 객체 생성.
-        JSONParser parser = new JSONParser();
-        // 2. 문자열을 JSON 형태로 JSONObject 객체에 저장. 	
-        JSONObject obj = (JSONObject)parser.parse(sb.toString());
-        // 3. 필요한 리스트 데이터 부분만 가져와 JSONArray로 저장.
-        JSONArray dataArr = (JSONArray) obj.get("data");
-	// 4. model에 담아준다.
-        model.addAttribute("data",dataArr);
-		return "성공";
+        return sb.toString();
+        //System.out.println(sb.toString());
+	}
+	public String getAirmanId(String name) throws IOException {
+		String id=null;
+		String input = common();
+		JSONObject vJsonObj = XML.toJSONObject(input);
+		JSONObject vJsonObj1= (JSONObject) vJsonObj.get("response");
+		JSONObject vJsonObj2= (JSONObject) vJsonObj1.get("body");
+		JSONObject vJsonObj3= (JSONObject) vJsonObj2.get("items");
+		JSONArray dataArr = (JSONArray) vJsonObj3.get("item");
+		for(int i=0;i<dataArr.length();i++) {
+			String str=dataArr.getJSONObject(i).get("airlineNm").toString();
+			if(str.equals(name)) id=dataArr.getJSONObject(i).get("airlineId").toString();
+        }
+		return id;
+	}
+	public String getAirmanNm(String id) throws IOException {
+		String name=null;
+		String input = common();
+		JSONObject vJsonObj = XML.toJSONObject(input);
+		JSONObject vJsonObj1= (JSONObject) vJsonObj.get("response");
+		JSONObject vJsonObj2= (JSONObject) vJsonObj1.get("body");
+		JSONObject vJsonObj3= (JSONObject) vJsonObj2.get("items");
+		JSONArray dataArr = (JSONArray) vJsonObj3.get("item");
+		for(int i=0;i<dataArr.length();i++) {
+			String str=dataArr.getJSONObject(i).get("airlineId").toString();
+			if(str.equals(id)) name=dataArr.getJSONObject(i).get("airlineNm").toString();
+        }
+		return name;
+	}
+	public List<String>  getAirmanIdList() throws IOException{
+		List<String> airmanIdList=new ArrayList<String>();
+		String input = common();
+		JSONObject vJsonObj = XML.toJSONObject(input);
+		JSONObject vJsonObj1= (JSONObject) vJsonObj.get("response");
+		JSONObject vJsonObj2= (JSONObject) vJsonObj1.get("body");
+		JSONObject vJsonObj3= (JSONObject) vJsonObj2.get("items");
+		JSONArray dataArr = (JSONArray) vJsonObj3.get("item");
+		for(int i=0;i<dataArr.length();i++) {
+			airmanIdList.add(dataArr.getJSONObject(i).get("airlineId").toString());
+        }
+		return airmanIdList;
+	}
+	public static List<String>  getAirmanNmList() throws IOException{
+		List<String> airmanNmList=new ArrayList<String>();
+		String input = common();
+		JSONObject vJsonObj = XML.toJSONObject(input);
+		JSONObject vJsonObj1= (JSONObject) vJsonObj.get("response");
+		JSONObject vJsonObj2= (JSONObject) vJsonObj1.get("body");
+		JSONObject vJsonObj3= (JSONObject) vJsonObj2.get("items");
+		JSONArray dataArr = (JSONArray) vJsonObj3.get("item");
+		for(int i=0;i<dataArr.length();i++) {
+			airmanNmList.add(dataArr.getJSONObject(i).get("airlineNm").toString());
+        }
+		return airmanNmList;
+	}
+	
+	public List<Airline> getAirmanList() throws IOException{
+		List<Airline> airlinetAllList=new ArrayList<Airline>();
+        String input = common();
+        JSONObject vJsonObj = XML.toJSONObject(input);
+        JSONObject vJsonObj1= (JSONObject) vJsonObj.get("response");
+        JSONObject vJsonObj2= (JSONObject) vJsonObj1.get("body");
+		JSONObject vJsonObj3= (JSONObject) vJsonObj2.get("items");
+		JSONArray dataArr = (JSONArray) vJsonObj3.get("item");
+		for(int i=0;i<dataArr.length();i++) {
+	        	Airline a=new Airline(dataArr.getJSONObject(i).get("airlineId").toString(),dataArr.getJSONObject(i).get("airlineNm").toString());
+	        	airlinetAllList.add(a);
+	    }
+		return airlinetAllList;
 	}
 }
