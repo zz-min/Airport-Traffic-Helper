@@ -1,0 +1,72 @@
+@charset "UTF-8";
+:root{
+	--color-white:#e5e6e3;
+	--color-black:#011627;
+	--color-blue1:#4A90E2;
+	--color-blue2:#8CB8ED;
+	
+	--color-point1:#e29c4a;
+	
+    --blackground-color:#dddddd;
+}
+selectContainer,#selectContainer_{
+    background-color: var(--color-blue2);
+    border-radius: 20px;
+    width: 1300px;
+    height: 100px;
+    display:flex;
+    flex-flow:column;
+    justify-content:center;
+    margin: 0 auto;
+}
+#serchFlightFormContainer,#serchFlightFormContainer_{
+	margin:0 auto;
+}
+#serchFlightForm>label,
+#serchFlightForm_>label{
+	font-size: 20px;
+	margin-left:10px;
+}
+#serchFlightForm>img,
+#serchFlightForm_>img{
+	vertical-align: middle;
+	margin-bottom: 5px;
+	width: 35px;
+	height: 35px;
+}
+.checkedserchFlight{
+	width: 180px;
+	height: 40px;
+	font-size: 20px;
+	border: 2px solid #ddd;
+	border-radius:8px;
+	background: url(/img/bg_select.png) no-repeat right 13px center;
+	background-color:lightgray;
+	text-align:center;
+	margin-top:20px;
+	-webkit-appearance: none;
+}
+#checkedDep_date,#checkedDep_date_{
+	width: 140px;
+	height: 40px;
+	font-size: 20px;
+	border: 2px solid #ddd;
+	border-radius:8px;
+	background-color:lightgray;
+	text-align:center;
+	margin-top:20px;
+	margin-right:10px;
+}
+#serchFlightBtn,#serchFlightBtn_{
+	font-size: 20px;
+	height: 45px;
+	width:130px;
+	margin:15px;
+	background-color: lightgray;
+	border-radius: 4px;
+}
+#serchFlightBtn:hover,
+#serchFlightBtn_:hover{
+    background-color: gray;
+    cursor: pointer;
+}

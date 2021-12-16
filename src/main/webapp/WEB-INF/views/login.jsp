@@ -8,9 +8,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Login</title>
-<script>
-
-</script>
+	<!-- Jquery사용 URL -->	
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	
+	<script src="/js/main.js?d" defer></script>
+	<link href="/css/common.css" rel="stylesheet" type="text/css"><!-- 공통 -->
+	<link href="/css/login.css" rel="stylesheet" type="text/css"><!-- 모든 다이알로그 공통 -->
 </head>
 <body>
 	<h1>Hi, user :)</h1>
@@ -44,7 +49,7 @@
 					</c:forEach>
 				</select>
 				
-				<input type="button" value="선택" id="serchFlightBtn" onclick = "location.href = '/input'"/>
+				<input type="button" value="선택" id="sBtn" />
 			</form>
 			</div>
 		</div>
